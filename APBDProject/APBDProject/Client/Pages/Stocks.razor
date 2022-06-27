@@ -1,0 +1,106 @@
+﻿@page "/Dashboard"
+@using APBDProject.Shared.Models
+@using APBDProject.Shared.Models.DTOs
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@attribute [Authorize]
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
+<link rel="stylesheet" href="Stocks.css">
+<h3 >Search for stocks</h3>
+
+
+<div class="input-group w-25 p-3 ">
+  <input type="text" class="form-control" placeholder="Ticker " aria-label="Recipient's username" aria-describedby="basic-addon2" @bind="@str">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" @onclick = "@(()=> OnChangeTickers())">Search</button>
+  </div>
+</div>
+
+
+
+
+
+ @if (stocks == null)
+{
+    <p><em>...</em></p>
+}
+else if (stocks != null)
+{
+    <table style ="width: 100%; text-align : center">
+        <thead>
+            <tr>
+                <th>Ticker</th> 
+                <th>Locale</th>
+                <th>Name</th>
+                <th>Market</th>
+                <th>Type</th>
+                <th>Add to watchlist</th>
+            </tr>
+        </thead>
+        <tbody >
+            @foreach (var stock in stocks)
+            {
+                <tr @onclick="@(() => { OpenDetails(stock.ticker); })">
+                    
+                    <td style = "border-bottom : 1px solid ">@stock.ticker</td> 
+                    <td style = "border-bottom : 1px solid ">@stock.locale</td>
+                    <td style = "border-bottom : 1px solid ">@stock.name</td>
+                    <td style = "border-bottom : 1px solid ">@stock.market</td>
+                    <td style = "border-bottom : 1px solid ">@stock.type</td>
+                    <td style = "border-bottom : 1px solid "><button type="button" class="btn btn-primary" @onclick="@(() => AddToWatchlist(stock.ticker))">+</button> </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private StockDTO[] stocks;
+    private StockInfo stock;
+    private string userID;
+    private string str;
+
+    protected override async Task OnInitializedAsync()
+    {
+         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            userID = authState.User.Identity.Name;
+    }
+
+
+    private async void OnChangeTickers()
+    {
+        //???zacina się przy spamowaniu
+        if (str != null && str.Length != 0) 
+        {
+            try
+            {
+                stocks = await Http.GetFromJsonAsync<StockDTO[]>($"api/stocks/{str}");
+            }
+            catch(Exception e)
+            {
+                OnChangeTickers();
+            }
+        }
+    }
+
+    private void OpenDetails(string id)
+    {
+        navigationManager.NavigateTo($"/details/{id}");
+    }
+
+    private async void AddToWatchlist(string id)
+    {
+         
+
+           
+        stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
+
+
+        var post = await Http.PostAsJsonAsync($"api/watchlist/{userID}",stock);
+    }
+
+}

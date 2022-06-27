@@ -1,0 +1,54 @@
+﻿@page "/details/{id}"
+@using APBDProject.Shared.Models
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
+
+@inject HttpClient Http
+
+<h1>@id</h1>
+
+
+
+@if(stock==null)
+{
+    <a>...</a>
+}else{
+<p>@stock.ticker</p>
+<p>@stock.description</p>
+<p>@stock.market</p>
+<p>@stock.name</p>
+<p>@stock.homepage_url</p>
+<p>@stock.locale</p>
+}
+
+@if(Prices==null)
+{
+    <p>...</p>
+}
+else
+{
+    @foreach(var price in Prices)
+    {
+        <p>@price.o</p>
+    }
+}
+
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+
+    public StockInfo stock { get; set; }
+
+    private List<StockPriceDate> Prices = new List<StockPriceDate>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
+        StockPriceDate[] pricesTmp = await Http.GetFromJsonAsync<StockPriceDate[]>($"api/stocks/prices/{id}");
+        Prices.AddRange(pricesTmp);
+    }
+
+
+}
