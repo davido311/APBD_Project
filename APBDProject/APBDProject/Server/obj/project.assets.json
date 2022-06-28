@@ -7309,11 +7309,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Server\\APBDProject.Server.csproj",
+      "projectUniqueName": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Server\\APBDProject.Server.csproj",
       "projectName": "APBDProject.Server",
-      "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Server\\APBDProject.Server.csproj",
+      "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Server\\APBDProject.Server.csproj",
       "packagesPath": "C:\\Users\\Davido\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Server\\obj\\",
+      "outputPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Davido\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7330,11 +7330,11 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj": {
-              "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj"
+            "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj": {
+              "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj"
             },
-            "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj": {
-              "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj"
+            "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj": {
+              "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj"
             }
           }
         }

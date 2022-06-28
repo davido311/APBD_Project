@@ -12,10 +12,11 @@ namespace APBDProject.Shared.Models
     {
         public string ticker { get; set; }
         public string name { get; set; }
-        public string description { get; set; }
-        public string homepage_url { get; set; }
-        public string locale { get; set; }
         public string market { get; set; }
+        public string homepage_url { get; set; }
+        public string description { get; set; }
+        public string locale { get; set; }
+    
 
     }
 }

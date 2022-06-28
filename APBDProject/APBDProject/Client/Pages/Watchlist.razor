@@ -2,10 +2,12 @@
 @using APBDProject.Shared.Models
 @using Microsoft.AspNetCore.Authorization
 
+
 @attribute [Authorize]
 @inject HttpClient Http
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager navigationManager
+
 
 <h3>Watchlist</h3>
 
@@ -22,6 +24,7 @@ else
                 <th>Locale</th>
                 <th>Name</th>
                 <th>Homepage</th>
+                <th>Action</th>
                 <th>Remove</th>
             </tr>
         </thead>
@@ -34,7 +37,8 @@ else
                     <td style = "border-top: 1px solid ">@stock.locale</td>
                     <td style = "border-top: 1px solid ">@stock.name</td>
                     <td style = "border-top: 1px solid "><a href = "@stock.homepage_url" target="_blank" >@stock.homepage_url</a></td>
-                  <td style = "border-top: 1px solid "><button type="button" class="btn btn-danger"   @onclick = "@(()=> RemoveRecord(stock))" >-</button></td> 
+                    <td style = "border-top: 1px solid "><button type="button" class="btn btn-info"  @onclick="@(() => { OpenDetails(stock.ticker); })">Details</button></td>
+                    <td style = "border-top: 1px solid "><button type="button" class="btn btn-danger"   @onclick = "@(()=>RemoveStockFromWatchlist(stock))" >-</button></td> 
                    
                 </tr>
             }
@@ -46,6 +50,7 @@ else
 @code {
     private StockInfo[] stocks;
     private string userID;
+  
 
     protected override async Task OnInitializedAsync()
     {
@@ -55,20 +60,16 @@ else
 
     }
 
-    private async Task RemoveRecord(StockInfo stock)
+    private async Task RemoveStockFromWatchlist(StockInfo stock)
     {
-
-         var delete = await Http.PostAsJsonAsync($"api/watchlist/delete/{userID}", stock);
-
-        stocks = null;
-
-        
-
-        stocks = await Http.GetFromJsonAsync<StockInfo[]>($"api/watchlist/{userID}");
+       
+           var delete = await Http.PostAsJsonAsync($"api/watchlist/delete/{userID}", stock);
+           stocks = await Http.GetFromJsonAsync<StockInfo[]>($"api/watchlist/{userID}"); 
 
     }
-
-
-
+      private void OpenDetails(string id)
+    {
+        navigationManager.NavigateTo($"/details/{id}");
+    }
 
 }

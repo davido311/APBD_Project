@@ -46,12 +46,22 @@ namespace APBDProject.Server.Controllers
             return result;
         }
 
-        [HttpGet("prices/{id}")]
+      /*  [HttpGet("prices/{id}")]
         public async Task<IEnumerable<StockPriceDate>> GetStockPrices(string id)
         {
             var result = await _service.GetStockPrices(id);
             return result;
         }
+*/
+
+        [HttpGet("previousclose/{id}")]
+        public async Task<OHLC> GetStockPrices2(string id) //działa
+        {
+            var result = await _service.GetStockPrices(id);
+            System.Console.WriteLine(result.o); 
+            return result;
+        }
+
 
     }
 }

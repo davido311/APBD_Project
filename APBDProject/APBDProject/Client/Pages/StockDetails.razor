@@ -6,7 +6,7 @@
 
 @inject HttpClient Http
 
-<h1>@id</h1>
+
 
 
 
@@ -14,24 +14,30 @@
 {
     <a>...</a>
 }else{
+    <h1>@stock.name</h1>
+
 <p>@stock.ticker</p>
 <p>@stock.description</p>
 <p>@stock.market</p>
-<p>@stock.name</p>
 <p>@stock.homepage_url</p>
 <p>@stock.locale</p>
 }
 
-@if(Prices==null)
+
+@if(prices==null)
 {
     <p>...</p>
 }
 else
 {
-    @foreach(var price in Prices)
-    {
-        <p>@price.o</p>
-    }
+
+   
+        <p> Open : @prices.o</p>
+        <p> High: @prices.h</p>
+        <p> Low: @prices.l</p>
+        <p> Close: @prices.c</p>
+        <p> Volume: @prices.v</p>
+    
 }
 
 
@@ -40,14 +46,17 @@ else
     public string id { get; set; }
 
     public StockInfo stock { get; set; }
+    public OHLC prices { get; set; }
 
     private List<StockPriceDate> Prices = new List<StockPriceDate>();
 
     protected override async Task OnInitializedAsync()
     {
         stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
-        StockPriceDate[] pricesTmp = await Http.GetFromJsonAsync<StockPriceDate[]>($"api/stocks/prices/{id}");
-        Prices.AddRange(pricesTmp);
+
+     
+       prices = await Http.GetFromJsonAsync<OHLC>($"api/stocks/previousclose/{id}");
+
     }
 
 

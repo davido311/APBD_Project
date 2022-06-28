@@ -10,8 +10,9 @@ namespace APBDProject.Server.Services
         public Task<IEnumerable<StockDTO>> GetSearchedStocks(string regex);
         public Task<StockInfo> GetStockInfo(string symbol);
         public Task<bool> PostStockInfo(StockInfoOHLC stock);
-        public Task<IEnumerable<StockPriceDate>> GetStockPrices(string symbol);
-       // public Task<StockPriceDate> GetStockPrices(string symbol);
+        public Task<OHLC> GetStockPrices(string symbol);
+
+       
 
     }
 }

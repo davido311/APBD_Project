@@ -63,59 +63,37 @@ namespace APBDProject.Server.Services
             }
         }
 
-        //??? naprawić błąd
-        //?wywala exp = bierzemy z bazy
-        //zmiana na listę żeby potem filtrować przedziałami po stronie klienta
-        //https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2021-07-22/2021-07-22?adjusted=true&sort=asc&limit=120&apiKey=caFEm_lPp21pTPcoh2vuwMbg0ANf4oHk
-        public async Task<IEnumerable<StockPriceDate>> GetStockPrices(string symbol)
+       
+        //get previos close == latest prices
+        public async Task<OHLC> GetStockPrices(string symbol)
         {
-
-            var toDate = DateTime.Now.ToString("yyyy-MM-dd");
-            var fromDate = DateTime.Now.AddYears(-1).ToString("yyy-MM-dd");
-            var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/range/1/day/{fromDate}/{toDate}?adjusted=true&sort=asc&limit=120&apiKey={polygonApiKey}");
-
+            var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/prev?adjusted=true&apiKey={polygonApiKey}");
             List<OHLC> ohlcs = json.results;
-
             if (ohlcs == null || ohlcs.Count == 0)
             {
-                return await _context.StockOHLCs.Where(e => e.GetStock.Equals(symbol)).Select(e => new StockPriceDate
+                return await _context.StockOHLCs.Where(e => e.GetStock.Equals(symbol)).Select(e => new OHLC
                 {
-                    DateTime = e.DateTime,
                     o = e.o,
                     h = e.h,
                     l = e.l,
                     c = e.c,
                     v = e.v
-                }).ToListAsync();
+                }).FirstAsync();
             }
             else
             {
-
-                double range = (DateTime.Parse(toDate) - DateTime.Parse(fromDate)).TotalDays;
-                int queryCount = ohlcs.Count;
-
-                DateTime dateTime = DateTime.Today.AddMonths(-3);
-                List<StockPriceDate> result = new List<StockPriceDate>();
-                foreach (OHLC os in ohlcs)
+                return new OHLC
                 {
-                    result.Add(new StockPriceDate
-                    {
-                        DateTime = dateTime.AddDays(range / queryCount),
-                        o = os.o,
-                        h = os.h,
-                        c = os.c,
-                        l = os.l,
-                        v = os.v
-                    });
-                    dateTime = dateTime.AddDays(range / queryCount);
-
-                }
-
-                return result;
+                    o = ohlcs[0].o,
+                    h = ohlcs[0].h,
+                    l = ohlcs[0].l,
+                    c = ohlcs[0].c,
+                    v = ohlcs[0].v
+                };
 
             }
-
         }
+
         //post new stock info to database
         //transaction
         //update stock, stockohlc 

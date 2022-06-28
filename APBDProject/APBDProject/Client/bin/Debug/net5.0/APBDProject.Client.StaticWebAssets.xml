@@ -1,6 +1,6 @@
 ﻿<StaticWebAssets Version="1.0">
-  <ContentRoot BasePath="/" Path="C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\bin\Debug\net5.0\wwwroot\" />
-  <ContentRoot BasePath="/" Path="C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\obj\Debug\net5.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="/" Path="C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\bin\Debug\net5.0\wwwroot\" />
+  <ContentRoot BasePath="/" Path="C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\obj\Debug\net5.0\scopedcss\bundle\" />
   <ContentRoot BasePath="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication" Path="C:\Users\Davido\.nuget\packages\microsoft.aspnetcore.components.webassembly.authentication\5.0.14\build\..\staticwebassets\" />
   <ContentRoot BasePath="_content/Syncfusion.Blazor" Path="C:\Users\Davido\.nuget\packages\syncfusion.blazor\20.1.0.61\build\..\staticwebassets\" />
 </StaticWebAssets>

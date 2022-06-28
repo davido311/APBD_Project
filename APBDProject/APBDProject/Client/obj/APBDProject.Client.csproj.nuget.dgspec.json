@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj": {}
+    "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj": {
+    "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj",
+        "projectUniqueName": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj",
         "projectName": "APBDProject.Client",
-        "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj",
+        "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Client\\APBDProject.Client.csproj",
         "packagesPath": "C:\\Users\\Davido\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Client\\obj\\",
+        "outputPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Client\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Davido\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj": {
-                "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj"
+              "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj": {
+                "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj"
               }
             }
           }
@@ -100,14 +100,14 @@
         }
       }
     },
-    "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj": {
+    "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj",
+        "projectUniqueName": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj",
         "projectName": "APBDProject.Shared",
-        "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj",
+        "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj",
         "packagesPath": "C:\\Users\\Davido\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\obj\\",
+        "outputPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Davido\\AppData\\Roaming\\NuGet\\NuGet.Config",

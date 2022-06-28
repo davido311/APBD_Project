@@ -1096,11 +1096,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj",
+      "projectUniqueName": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj",
       "projectName": "APBDProject.Shared",
-      "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj",
+      "projectPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\APBDProject.Shared.csproj",
       "packagesPath": "C:\\Users\\Davido\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBDProject\\APBDProject\\Shared\\obj\\",
+      "outputPath": "C:\\Users\\Davido\\Desktop\\APBD\\APBD_Project\\APBDProject\\APBDProject\\Shared\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Davido\\AppData\\Roaming\\NuGet\\NuGet.Config",

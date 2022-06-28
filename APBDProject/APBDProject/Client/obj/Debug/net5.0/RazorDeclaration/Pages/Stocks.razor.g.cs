@@ -13,112 +13,112 @@ namespace APBDProject.Client.Pages
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 1 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 2 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using System.Net.Http.Json;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 3 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 4 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 5 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 6 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 7 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 8 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 9 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 10 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using APBDProject.Client;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 11 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\_Imports.razor"
+#line 11 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using APBDProject.Client.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\Pages\Stocks.razor"
+#line 2 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\Stocks.razor"
 using APBDProject.Shared.Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\Pages\Stocks.razor"
+#line 3 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\Stocks.razor"
 using APBDProject.Shared.Models.DTOs;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\Pages\Stocks.razor"
+#line 4 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\Stocks.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\Pages\Stocks.razor"
+#line 5 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\Stocks.razor"
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\Pages\Stocks.razor"
+#line 7 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\Stocks.razor"
            [Authorize]
 
 #line default
@@ -133,13 +133,15 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 61 "C:\Users\Davido\Desktop\APBD\APBDProject\APBDProject\Client\Pages\Stocks.razor"
+#line 70 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\Stocks.razor"
        
     private StockDTO[] stocks;
     private StockInfo stock;
     private string userID;
     private string str;
+    
 
+    
     protected override async Task OnInitializedAsync()
     {
          var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();

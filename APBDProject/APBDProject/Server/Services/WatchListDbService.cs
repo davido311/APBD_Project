@@ -16,7 +16,7 @@ namespace APBDProject.Server.Services
             _context = context;
         }
         
-
+        
         public async Task<bool> AddStockToWatchlist(string userID, Stock stock)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
@@ -34,7 +34,6 @@ namespace APBDProject.Server.Services
                         await _context.SaveChangesAsync();
                     }
                     //czy jest rekord z userID oraz stock.ticker 
-                    //error - klucz główny usersow się nie zgadza????
                     //  var stockAddedToWl = await _context.User_Stocks.Where(e => e.StockID.Equals(stock.ticker) && e.UserID.Equals(userID)).ToListAsync();
 
                     var stockAddedToWl = await _context.User_Stocks.Where(e => e.StockID.Equals(stock.ticker) && e.UserID.Equals(_context.Users.Where(u => u.UserName.Equals(userID)).Select(u => u.Id).First())).ToListAsync();
@@ -82,32 +81,19 @@ namespace APBDProject.Server.Services
             return watchList;
         }
         //błąd 
-        //wstawić transakcję
+        
         public async Task<bool> RemoveStockFromWatchlist(string userID, Stock stock)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
-                
-            {
-                try
-                {
-                    var db = await _context.User_Stocks.FirstAsync(e => e.StockID.Equals(stock.ticker) 
-                                                                    && e.UserID.Equals(_context.Users.First(u => u.UserName.Equals(userID)).Id));
-                    db.Stock = null;
-                    db.StockID = null;
-                    db.UserID= null;
-                    db.User = null;
-                    await _context.SaveChangesAsync();
-                    await transaction.CommitAsync();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Błąd przy usuwaniu");
-                    await transaction.RollbackAsync();
-                    return false;
-                }
-            }
+          
+
+            var toDelete = await _context.User_Stocks.SingleOrDefaultAsync(e => e.StockID == stock.ticker && e.UserID.Equals(_context.Users.First(u => u.UserName.Equals(userID)).Id));
+            _context.User_Stocks.Remove(toDelete);
+            _context.SaveChanges();
 
             return true;
+
+
+
         }
 
 
