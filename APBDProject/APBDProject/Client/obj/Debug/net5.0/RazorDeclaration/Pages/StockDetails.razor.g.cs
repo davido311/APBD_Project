@@ -98,13 +98,20 @@ using APBDProject.Shared.Models;
 #nullable disable
 #nullable restore
 #line 3 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\StockDetails.razor"
+using APBDProject.Shared.Models.DTOs;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\StockDetails.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\StockDetails.razor"
+#line 6 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\StockDetails.razor"
            [Authorize]
 
 #line default
@@ -119,7 +126,7 @@ using Microsoft.AspNetCore.Authorization;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 44 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\StockDetails.razor"
+#line 46 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\StockDetails.razor"
       
     [Parameter]
     public string id { get; set; }
@@ -127,14 +134,32 @@ using Microsoft.AspNetCore.Authorization;
     public StockInfo stock { get; set; }
     public OHLC prices { get; set; }
 
+
+
+
     private List<StockPriceDate> Prices = new List<StockPriceDate>();
 
     protected override async Task OnInitializedAsync()
     {
         stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
 
-     
-       prices = await Http.GetFromJsonAsync<OHLC>($"api/stocks/previousclose/{id}");
+
+        prices = await Http.GetFromJsonAsync<OHLC>($"api/stocks/previousclose/{id}");
+
+        var postOHCL = new StockPriceDate
+            {
+                DateTime = DateTime.Now,
+                o = prices.o,
+                c = prices.c,
+                h = prices.h,
+                l = prices.l,
+                v = prices.v
+            };
+
+       
+
+
+
 
     }
 

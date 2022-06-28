@@ -34,11 +34,9 @@ namespace APBDProject.Server.Controllers
         [HttpPost("delete/{userID}")]
         public async Task<IActionResult> RemoveStockFromWatchlist(string userID, Stock stock)
         {
-            System.Console.WriteLine("-----------------------deleted?");
-            System.Console.WriteLine(userID);
             var tmp= await _service.RemoveStockFromWatchlist(userID, stock);  
             return Ok(tmp);
-            //jeżeli jest w watchlist to nie powinno być błędu
+           
         }
 
         [HttpPost("{userID}")]

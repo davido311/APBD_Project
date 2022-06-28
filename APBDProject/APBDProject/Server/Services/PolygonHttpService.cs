@@ -63,13 +63,25 @@ namespace APBDProject.Server.Services
             }
         }
 
-       
+
         //get previos close == latest prices
         public async Task<OHLC> GetStockPrices(string symbol)
         {
-            var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/prev?adjusted=true&apiKey={polygonApiKey}");
-            List<OHLC> ohlcs = json.results;
-            if (ohlcs == null || ohlcs.Count == 0)
+
+            try
+            {
+                var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/prev?adjusted=true&apiKey={polygonApiKey}");
+                List<OHLC> ohlcs = json.results;
+                return new OHLC
+                {
+                    o = ohlcs[0].o,
+                    h = ohlcs[0].h,
+                    l = ohlcs[0].l,
+                    c = ohlcs[0].c,
+                    v = ohlcs[0].v
+                };
+            }
+            catch (Exception e)
             {
                 return await _context.StockOHLCs.Where(e => e.GetStock.Equals(symbol)).Select(e => new OHLC
                 {
@@ -79,19 +91,40 @@ namespace APBDProject.Server.Services
                     c = e.c,
                     v = e.v
                 }).FirstAsync();
-            }
-            else
-            {
-                return new OHLC
-                {
-                    o = ohlcs[0].o,
-                    h = ohlcs[0].h,
-                    l = ohlcs[0].l,
-                    c = ohlcs[0].c,
-                    v = ohlcs[0].v
-                };
 
             }
+
+
+           
+
+
+        }   
+
+            
+
+        //get daily prices
+        public async Task<OHLCDTO> GetStockPricesDaily(string symbol, string date)
+        {
+            
+            //var postDate = date.ToString("yyyy-MM-dd");
+            try
+            {
+                var json = await httpClient.GetFromJsonAsync<OHLCDTO>($"https://api.polygon.io/v1/open-close/{symbol}/{date}?adjusted=true&apiKey={polygonApiKey}");
+                return json;
+            }
+            catch (Exception ex)
+            {
+                return await _context.StockOHLCs.Where(e => e.GetStock.Equals(symbol) && e.DateTime.ToString("yyyy-MM-dd").Equals(date)).Select(e => new OHLCDTO
+                {
+                    from = e.DateTime,
+                    open = e.o,
+                    high = e.h,
+                    low = e.l,
+                    close = e.c,
+                    volume = e.v
+                }).FirstAsync();
+            }
+
         }
 
         //post new stock info to database
@@ -117,30 +150,24 @@ namespace APBDProject.Server.Services
 
                 }
 
-                var prices = await _context.StockOHLCs.Where(e => e.GetStock.Equals(stock.Stock.ticker)).ToListAsync();
-                if (prices != null)
+
+                var priveAlreadyInDb = await _context.StockOHLCs.Where(e => e.StockID.Equals(stock.Stock.ticker) && e.DateTime == DateTime.Now).ToListAsync();
+                if (priveAlreadyInDb == null)
                 {
-                    foreach (var price in prices)
+                    await _context.StockOHLCs.AddRangeAsync( new StockOHLC
                     {
-                        price.GetStock = null;
-                        price.StockID = null;
-                    }
+                        StockID = stock.Stock.ticker,
+                        DateTime = stock.Prices.DateTime,
+                        o = stock.Prices.o,
+                        h = stock.Prices.h,
+                        c = stock.Prices.c,
+                        l = stock.Prices.l,
+                        v = stock.Prices.v
+
+                    });
+
                     await _context.SaveChangesAsync();
                 }
-
-                await _context.StockOHLCs.AddRangeAsync(stock.Prices.Select(e => new StockOHLC
-                {
-                    StockID = stock.Stock.ticker,
-                    DateTime = e.DateTime,
-                    o = e.o,
-                    h = e.h,
-                    c = e.c,
-                    l = e.l,
-                    v = e.v
-
-                }));
-
-                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)

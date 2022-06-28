@@ -55,10 +55,25 @@ namespace APBDProject.Server.Controllers
 */
 
         [HttpGet("previousclose/{id}")]
-        public async Task<OHLC> GetStockPrices2(string id) //działa
+        public async Task<OHLC> GetStockPrices(string id) //działa
         {
             var result = await _service.GetStockPrices(id);
-            System.Console.WriteLine(result.o); 
+           // System.Console.WriteLine(result.o); 
+            return result;
+        }
+
+        [HttpGet("dailyclose/{id}/{date}")]
+        public async Task<OHLCDTO> GetStockPrices2(string id, string date) //działa
+        {
+            var result = await _service.GetStockPricesDaily(id,date);
+            System.Console.WriteLine(result.open);
+            return result;
+        }
+
+        [HttpPost]
+        public async Task<bool> PostStockInfo(StockInfoOHLC stock)
+        {
+            var result = await _service.PostStockInfo(stock);
             return result;
         }
 

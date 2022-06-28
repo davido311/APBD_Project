@@ -1,5 +1,6 @@
 ﻿@page "/details/{id}"
 @using APBDProject.Shared.Models
+@using APBDProject.Shared.Models.DTOs
 @using Microsoft.AspNetCore.Authorization
 
 @attribute [Authorize]
@@ -16,12 +17,13 @@
 }else{
     <h1>@stock.name</h1>
 
-<p>@stock.ticker</p>
+<p>Ticker: @stock.ticker @stock.locale</p>
 <p>@stock.description</p>
-<p>@stock.market</p>
-<p>@stock.homepage_url</p>
-<p>@stock.locale</p>
+<p>Market:  @stock.market</p>
+<p><a href ="@stock.homepage_url">@stock.homepage_url</a></p>
+
 }
+
 
 
 @if(prices==null)
@@ -48,14 +50,32 @@ else
     public StockInfo stock { get; set; }
     public OHLC prices { get; set; }
 
+
+
+
     private List<StockPriceDate> Prices = new List<StockPriceDate>();
 
     protected override async Task OnInitializedAsync()
     {
         stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
 
-     
-       prices = await Http.GetFromJsonAsync<OHLC>($"api/stocks/previousclose/{id}");
+
+        prices = await Http.GetFromJsonAsync<OHLC>($"api/stocks/previousclose/{id}");
+
+        var postOHCL = new StockPriceDate
+            {
+                DateTime = DateTime.Now,
+                o = prices.o,
+                c = prices.c,
+                h = prices.h,
+                l = prices.l,
+                v = prices.v
+            };
+
+       
+
+
+
 
     }
 

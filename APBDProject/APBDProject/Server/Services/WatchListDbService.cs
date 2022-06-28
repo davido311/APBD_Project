@@ -19,12 +19,11 @@ namespace APBDProject.Server.Services
         
         public async Task<bool> AddStockToWatchlist(string userID, Stock stock)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            /*using (var transaction = await _context.Database.BeginTransactionAsync())
             {
 
                 try
                 {
-
 
                     var stockInDb = await _context.Stocks.Where(e => e.ticker.Equals(stock.ticker)).ToListAsync();
 
@@ -47,10 +46,6 @@ namespace APBDProject.Server.Services
                         });
                         await _context.SaveChangesAsync();
                     }
-
-                  
-
-                  
                     await transaction.CommitAsync();
                 }
                 catch (Exception ex)
@@ -60,8 +55,44 @@ namespace APBDProject.Server.Services
                     return false;
                 }
             }
-            return true;
+            return true;*/
            
+
+                try
+                {
+
+                    var stockInDb = await _context.Stocks.Where(e => e.ticker.Equals(stock.ticker)).ToListAsync();
+
+                    if (stockInDb.Count == 0)
+                    {
+                        await _context.Stocks.AddAsync(stock);
+                        await _context.SaveChangesAsync();
+                    }
+                    //czy jest rekord z userID oraz stock.ticker 
+                    //  var stockAddedToWl = await _context.User_Stocks.Where(e => e.StockID.Equals(stock.ticker) && e.UserID.Equals(userID)).ToListAsync();
+
+                    var stockAddedToWl = await _context.User_Stocks.Where(e => e.StockID.Equals(stock.ticker) && e.UserID.Equals(_context.Users.Where(u => u.UserName.Equals(userID)).Select(u => u.Id).First())).ToListAsync();
+                    if (stockAddedToWl.Count == 0)
+                    {
+                        await _context.User_Stocks.AddAsync(new User_Stock
+                        {
+                            UserID = _context.Users.Where(e => e.UserName.Equals(userID)).Select(e => e.Id).First(), //userID
+                            StockID = stock.ticker
+
+                        });
+                        await _context.SaveChangesAsync();
+                    }
+                   
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                   
+                    return false;
+                }
+            
+            return true;
+
         }
 
         public async Task<IEnumerable<Stock>> GetStocks(string userID)

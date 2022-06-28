@@ -9,6 +9,6 @@ namespace APBDProject.Shared.Models
     public class StockInfoOHLC
     {
         public StockInfo Stock { get; set; }
-        public ICollection<StockPriceDate> Prices { get; set; }
+        public StockPriceDate Prices { get; set; }
     }
 }

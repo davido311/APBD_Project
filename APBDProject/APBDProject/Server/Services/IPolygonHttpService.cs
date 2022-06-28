@@ -1,5 +1,6 @@
 ﻿using APBDProject.Shared.Models;
 using APBDProject.Shared.Models.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,6 +12,8 @@ namespace APBDProject.Server.Services
         public Task<StockInfo> GetStockInfo(string symbol);
         public Task<bool> PostStockInfo(StockInfoOHLC stock);
         public Task<OHLC> GetStockPrices(string symbol);
+
+        public Task<OHLCDTO> GetStockPricesDaily(string symbol, string date);
 
        
 
