@@ -14,8 +14,8 @@ namespace APBDProject.Server.Models
         public string market { get; set; }
         [Required]
         public string homepage_url { get; set; }
-        [Required]
-        public string description { get; set; }
+        
+        public string? description { get; set; }
         [Required]
         public string locale { get; set; }
 

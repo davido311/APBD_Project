@@ -1,1 +1,1 @@
-﻿select * from User_Stocks
+﻿select * from StockOHLCs

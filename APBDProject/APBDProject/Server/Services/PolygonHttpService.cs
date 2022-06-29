@@ -4,6 +4,7 @@ using APBDProject.Shared.Models;
 using APBDProject.Shared.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace APBDProject.Server.Services
 
         public async Task<IEnumerable<StockDTO>> GetSearchedStocks(string regex) //regex = symbol
         {
-            var json = await httpClient.GetFromJsonAsync<StocksSearch>($"https://api.polygon.io/v3/reference/tickers?active=true&sort=ticker&order=asc&limit=200&search={regex}&apiKey=caFEm_lPp21pTPcoh2vuwMbg0ANf4oHk");
+            var json = await httpClient.GetFromJsonAsync<StocksSearch>($"https://api.polygon.io/v3/reference/tickers?active=true&sort=ticker&order=asc&limit=200&search={regex}&apiKey={polygonApiKey}");
 
             var stocks = json.results;
 
@@ -48,18 +49,20 @@ namespace APBDProject.Server.Services
             }
             catch (Exception e)
             {
-               
-               return await _context.Stocks
-                    .Where(s => s.ticker.Equals(symbol))
-                    .Select(s => new StockInfo
-                    {
-                        ticker = s.ticker,
-                        name = s.name,
-                        locale = s.locale,
-                        homepage_url = s.homepage_url,
-                        description = s.description,
-                        market= s.market,
-                    }).FirstAsync();
+
+                return await _context.Stocks
+                      .Where(s => s.ticker.Equals(symbol))
+                      .Select(s => new StockInfo
+                      {
+                          ticker = s.ticker,
+                          name = s.name,
+                          locale = s.locale,
+                          homepage_url = s.homepage_url,
+                          description = s.description,
+                          market= s.market,
+                      }).FirstAsync();
+
+                
             }
         }
 
@@ -72,6 +75,8 @@ namespace APBDProject.Server.Services
             {
                 var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/prev?adjusted=true&apiKey={polygonApiKey}");
                 List<OHLC> ohlcs = json.results;
+                
+                System.Console.WriteLine(json);
                 return new OHLC
                 {
                     o = ohlcs[0].o,
@@ -83,7 +88,9 @@ namespace APBDProject.Server.Services
             }
             catch (Exception e)
             {
-                return await _context.StockOHLCs.Where(e => e.GetStock.Equals(symbol)).Select(e => new OHLC
+                Console.WriteLine(e.Message);
+                return await _context.StockOHLCs.Where(e => e.StockID.Equals(symbol))
+                                                .Select(e => new OHLC
                 {
                     o = e.o,
                     h = e.h,
@@ -134,7 +141,7 @@ namespace APBDProject.Server.Services
         {
             try
             {
-                var stockAlreadyInDb = await _context.Stocks.Where(e => e.ticker.Equals(stock.Stock.ticker)).ToListAsync();
+                var stockAlreadyInDb = await _context.Stocks.FirstOrDefaultAsync(e => e.ticker.Equals(stock.Stock.ticker));
                 if (stockAlreadyInDb == null)
                 {
                     await _context.Stocks.AddAsync(new Stock
@@ -149,9 +156,39 @@ namespace APBDProject.Server.Services
                     await _context.SaveChangesAsync();
 
                 }
+                var newOHLC = await _context.StockOHLCs.SingleOrDefaultAsync(e => e.StockID.Equals(stock.Stock.ticker)); 
+                if(newOHLC == null)
+                {
+                    await _context.StockOHLCs.AddAsync(new StockOHLC
+                    {
+                        StockID = stock.Stock.ticker,
+                        DateTime = stock.Prices.DateTime,
+                        o = stock.Prices.o,
+                        h = stock.Prices.h,
+                        c = stock.Prices.c,
+                        l = stock.Prices.l,
+                        v = stock.Prices.v
+                    });
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    if (newOHLC.o != stock.Prices.o) //update new prices and date
+                    {
+                        newOHLC.DateTime = stock.Prices.DateTime;
+                        newOHLC.o = stock.Prices.o;
+                        newOHLC.h = stock.Prices.h;
+                        newOHLC.c = stock.Prices.c;
+                        newOHLC.l = stock.Prices.l;
+                        newOHLC.v = stock.Prices.v;
+                        await _context.SaveChangesAsync();
+                    }
 
+                }
 
-                var priveAlreadyInDb = await _context.StockOHLCs.Where(e => e.StockID.Equals(stock.Stock.ticker) && e.DateTime == DateTime.Now).ToListAsync();
+            /*    var latestDate = await _context.StockOHLCs.MaxAsync(e => e.DateTime);
+                
+                var priveAlreadyInDb = await _context.StockOHLCs.Where(e => e.StockID.Equals(stock.Stock.ticker) && e.DateTime == latestDate).ToListAsync();
                 if (priveAlreadyInDb == null)
                 {
                     await _context.StockOHLCs.AddRangeAsync( new StockOHLC
@@ -167,11 +204,12 @@ namespace APBDProject.Server.Services
                     });
 
                     await _context.SaveChangesAsync();
-                }
+                }*/
                 return true;
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }

@@ -73,6 +73,7 @@ namespace APBDProject.Server.Controllers
         [HttpPost]
         public async Task<bool> PostStockInfo(StockInfoOHLC stock)
         {
+            System.Console.WriteLine("działaaaaaaaa");
             var result = await _service.PostStockInfo(stock);
             return result;
         }

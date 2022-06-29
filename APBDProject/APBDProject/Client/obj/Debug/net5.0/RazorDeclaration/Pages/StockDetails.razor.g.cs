@@ -146,6 +146,8 @@ using Microsoft.AspNetCore.Authorization;
 
         prices = await Http.GetFromJsonAsync<OHLC>($"api/stocks/previousclose/{id}");
 
+
+
         var postOHCL = new StockPriceDate
             {
                 DateTime = DateTime.Now,
@@ -156,10 +158,17 @@ using Microsoft.AspNetCore.Authorization;
                 v = prices.v
             };
 
-       
+        var postStock = new StockInfoOHLC
+            {
+                Prices = postOHCL,
+                Stock = stock
+            };
 
 
+        var postStockInfo = await Http.PostAsJsonAsync<StockInfoOHLC>($"api/stocks",postStock);       
 
+
+        
 
     }
 

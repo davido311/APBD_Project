@@ -137,15 +137,18 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
        
     private StockDTO[] stocks;
     private StockInfo stock;
+    private StockInfo stock2;
     private string userID;
     private string str;
-    
 
-    
+
+
     protected override async Task OnInitializedAsync()
     {
-         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            userID = authState.User.Identity.Name;
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userID = authState.User.Identity.Name;
+
+
     }
 
 
@@ -165,20 +168,21 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
         }
     }
 
-    private void OpenDetails(string id)
+    private  void OpenDetails(string id)
     {
         navigationManager.NavigateTo($"/details/{id}");
+
     }
 
     private async void AddToWatchlist(string id)
     {
          
-
+        
            
-        stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
+       stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
 
 
-        var post = await Http.PostAsJsonAsync($"api/watchlist/{userID}",stock);
+       var post = await Http.PostAsJsonAsync($"api/watchlist/{userID}",stock);
     }
 
 
