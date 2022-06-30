@@ -11,5 +11,6 @@ namespace APBDProject.Shared.Models
     {
         public List<StockDTO> results { get; set; }
         public string Status { get; set; }
+       
     }
 }

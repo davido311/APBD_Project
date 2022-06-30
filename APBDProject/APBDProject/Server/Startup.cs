@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Syncfusion.Blazor;
 using System.Linq;
 
+
 namespace APBDProject.Server
 {
     public class Startup
@@ -54,6 +55,7 @@ namespace APBDProject.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjYzOTUxQDMyMzAyZTMxMmUzMG9OVnhKNWRsNGRNTzNrMmc4WitlRHZmcE9EczRHZzAzZzlJd2RrS3g4OG89");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

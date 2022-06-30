@@ -1,1 +1,1 @@
-﻿Select * from User_Stocks
+﻿select * from stocks

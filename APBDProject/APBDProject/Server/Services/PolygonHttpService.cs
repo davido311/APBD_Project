@@ -32,7 +32,7 @@ namespace APBDProject.Server.Services
 
         public async Task<IEnumerable<StockDTO>> GetSearchedStocks(string regex) //regex = symbol
         {
-            var json = await httpClient.GetFromJsonAsync<StocksSearch>($"https://api.polygon.io/v3/reference/tickers?active=true&sort=ticker&order=asc&limit=200&search={regex}&apiKey={polygonApiKey}");
+            var json = await httpClient.GetFromJsonAsync<StocksSearch>($"https://api.polygon.io/v3/reference/tickers?market=stocks&search={regex}&active=true&sort=ticker&order=asc&limit=100&apiKey={polygonApiKey}");
 
             var stocks = json.results;
 
@@ -75,6 +75,17 @@ namespace APBDProject.Server.Services
             {
                 var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/prev?adjusted=true&apiKey={polygonApiKey}");
                 List<OHLC> ohlcs = json.results;
+
+                var count = json.queryCount;
+                if (count == 0)
+                    return new OHLC
+                    {
+                        o=0,
+                        h=0,
+                        l=0,
+                        c=0,
+                        v=0,
+                    };
                 
                 System.Console.WriteLine(json);
                 return new OHLC
@@ -109,30 +120,8 @@ namespace APBDProject.Server.Services
 
             
 
-        //get daily prices
-        public async Task<OHLCDTO> GetStockPricesDaily(string symbol, string date)
-        {
-            
-            //var postDate = date.ToString("yyyy-MM-dd");
-            try
-            {
-                var json = await httpClient.GetFromJsonAsync<OHLCDTO>($"https://api.polygon.io/v1/open-close/{symbol}/{date}?adjusted=true&apiKey={polygonApiKey}");
-                return json;
-            }
-            catch (Exception ex)
-            {
-                return await _context.StockOHLCs.Where(e => e.GetStock.Equals(symbol) && e.DateTime.ToString("yyyy-MM-dd").Equals(date)).Select(e => new OHLCDTO
-                {
-                    from = e.DateTime,
-                    open = e.o,
-                    high = e.h,
-                    low = e.l,
-                    close = e.c,
-                    volume = e.v
-                }).FirstAsync();
-            }
-
-        }
+       
+        
 
         //post new stock info to database
         //transaction
@@ -212,6 +201,83 @@ namespace APBDProject.Server.Services
                 Console.WriteLine(ex.Message);
                 return false;
             }
+        }
+
+
+        public async Task<IEnumerable<StockPriceDate>> GetStockRangeRPrices(string symbol)
+        {
+
+            var toDate = DateTime.Now.ToString("yyyy-MM-dd");
+            var fromDate = DateTime.Now.AddMonths(-3).ToString("yyy-MM-dd");
+            var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/range/1/day/{fromDate}/{toDate}?adjusted=true&sort=asc&limit=120&apiKey={polygonApiKey}");
+            int adder =0;
+            int index =0;
+
+            List<OHLC> ohlcs = json.results;
+
+
+                double range = (DateTime.Parse(toDate) - DateTime.Parse(fromDate)).TotalDays; // rzeczywista ilosc dni
+                int queryCount = ohlcs.Count; //ilosc zwroconych 
+
+                DateTime dateTime = DateTime.Today.AddDays(-range);
+                List<StockPriceDate> result = new List<StockPriceDate>();
+
+
+           
+            Console.WriteLine(range);
+            Console.WriteLine(queryCount);
+            Console.WriteLine(DayOfWeek.Saturday);
+
+            /*  foreach (OHLC os in ohlcs)
+                  {
+                  if (dateTime.DayOfWeek != DayOfWeek.Saturday || dateTime.DayOfWeek != DayOfWeek.Sunday)
+                  {
+                      result.Add(new StockPriceDate
+                      {
+                          DateTime = dateTime.AddDays(adder), //31-03 
+                          o = os.o,
+                          h = os.h,
+                          c = os.c,
+                          l = os.l,
+                          v = os.v
+                      });
+
+                  }
+                 // adder++;
+                 // dateTime = dateTime.AddDays(range/queryCount);
+
+              }*/
+
+            while (dateTime != DateTime.Now && index<queryCount )
+            {
+                
+
+                if ( !(dateTime.DayOfWeek.Equals(DayOfWeek.Saturday)) && !(dateTime.DayOfWeek.Equals(DayOfWeek.Sunday))) 
+                {
+                   
+                    var os = ohlcs[index]; 
+                    result.Add(new StockPriceDate
+                    {
+                        DateTime = dateTime, //31-03 
+                        o = os.o,
+                        h = os.h,
+                        c = os.c,
+                        l = os.l,
+                        v = os.v
+                    });
+                    index++;
+                  
+                   // Console.WriteLine(dateTime.DayOfWeek);
+                    //Console.WriteLine(dateTime.DayOfWeek.Equals(DayOfWeek.Saturday));
+                }
+
+                Console.WriteLine(!(dateTime.DayOfWeek.Equals(DayOfWeek.Saturday)) && !(dateTime.DayOfWeek.Equals(DayOfWeek.Sunday)));
+                dateTime = dateTime.AddDays(1);
+
+            }
+
+                return result;
+
         }
     }
 }

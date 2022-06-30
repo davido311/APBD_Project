@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace APBDProject.Server.Controllers
 {
-    [Authorize] 
+    [Authorize]
     [ApiController]
     [Route("api/stocks")]
-   
+
     public class StocksController : ControllerBase
     {
 
         private readonly IPolygonHttpService _service;
         private readonly ILogger<StocksController> _logger;
-        
-        public StocksController(IPolygonHttpService service,ILogger<StocksController> logger)
+
+        public StocksController(IPolygonHttpService service, ILogger<StocksController> logger)
         {
             _service = service;
             _logger = logger;
@@ -42,38 +42,37 @@ namespace APBDProject.Server.Controllers
         public async Task<StockInfo> GetStockDetails(string id)
         {
             var result = await _service.GetStockInfo(id);
-         
+
             return result;
         }
 
-      /*  [HttpGet("prices/{id}")]
-        public async Task<IEnumerable<StockPriceDate>> GetStockPrices(string id)
-        {
-            var result = await _service.GetStockPrices(id);
-            return result;
-        }
-*/
+        /*  [HttpGet("prices/{id}")]
+          public async Task<IEnumerable<StockPriceDate>> GetStockPrices(string id)
+          {
+              var result = await _service.GetStockPrices(id);
+              return result;
+          }
+  */
 
         [HttpGet("previousclose/{id}")]
         public async Task<OHLC> GetStockPrices(string id) //działa
         {
             var result = await _service.GetStockPrices(id);
-           // System.Console.WriteLine(result.o); 
+            // System.Console.WriteLine(result.o); 
             return result;
         }
 
-        [HttpGet("dailyclose/{id}/{date}")]
-        public async Task<OHLCDTO> GetStockPrices2(string id, string date) //działa
+        [HttpGet("prices/{id}")]
+        public async Task<IEnumerable<StockPriceDate>> GetStockRAngePrices(string id)
         {
-            var result = await _service.GetStockPricesDaily(id,date);
-            System.Console.WriteLine(result.open);
-            return result;
+            return await _service.GetStockRangeRPrices(id);
         }
+
+      
 
         [HttpPost]
         public async Task<bool> PostStockInfo(StockInfoOHLC stock)
         {
-            System.Console.WriteLine("działaaaaaaaa");
             var result = await _service.PostStockInfo(stock);
             return result;
         }

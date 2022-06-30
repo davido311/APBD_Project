@@ -13,9 +13,9 @@ namespace APBDProject.Server.Services
         public Task<bool> PostStockInfo(StockInfoOHLC stock);
         public Task<OHLC> GetStockPrices(string symbol);
 
-        public Task<OHLCDTO> GetStockPricesDaily(string symbol, string date);
+        Task<IEnumerable<StockPriceDate>> GetStockRangeRPrices(string symbol);
 
-       
+
 
     }
 }

@@ -90,6 +90,13 @@ using APBDProject.Client.Shared;
 #line hidden
 #nullable disable
 #nullable restore
+#line 12 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
+using Syncfusion.Blazor.Charts;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 2 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
 using APBDProject.Shared.Models;
 
