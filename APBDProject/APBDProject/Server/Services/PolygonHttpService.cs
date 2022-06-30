@@ -211,7 +211,7 @@ namespace APBDProject.Server.Services
                 var toDate = DateTime.Now.ToString("yyyy-MM-dd");
                 var fromDate = DateTime.Now.AddMonths(-3).ToString("yyy-MM-dd");
                 var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/range/1/day/{fromDate}/{toDate}?adjusted=true&sort=asc&limit=120&apiKey={polygonApiKey}");
-                int adder = 0;
+               
                 int index = 0;
 
                 List<OHLC> ohlcs = json.results;

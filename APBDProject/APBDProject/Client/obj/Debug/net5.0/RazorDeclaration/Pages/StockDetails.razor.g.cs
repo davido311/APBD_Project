@@ -147,7 +147,7 @@ using Syncfusion.Blazor.Calendars;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 73 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\StockDetails.razor"
+#line 72 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\Pages\StockDetails.razor"
       
     [Parameter]
     public string id { get; set; }
@@ -158,15 +158,23 @@ using Syncfusion.Blazor.Calendars;
     public List<StockPriceDate> StockPrices = new List<StockPriceDate>();
     public List<StockPriceDate> Prices2 = new List<StockPriceDate>();
 
-   
-    
+
+
     protected override async Task OnInitializedAsync()
     {
-        StockPriceDate[] tabPrices = await Http.GetFromJsonAsync<StockPriceDate[]>($"api/stocks/prices/{id}");
+        try{
+            StockPriceDate[] tabPrices = await Http.GetFromJsonAsync<StockPriceDate[]>($"api/stocks/prices/{id}");
 
-        StockPrices.AddRange(tabPrices);
 
-       
+           
+                StockPrices.AddRange(tabPrices);
+        }
+        catch (Exception e)
+        {
+
+        }
+
+      
 
         stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
 

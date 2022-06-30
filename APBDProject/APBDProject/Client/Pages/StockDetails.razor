@@ -44,26 +44,25 @@ else
         <p> Volume: @prices.v</p>
     
 }
-@if (StockPrices != null)
+@if (StockPrices.Count>1)
 {
-@*
-    @foreach(var p in StockPrices)
+
+   @foreach(var p in StockPrices)
     {
-        <p>@p.DateTime</p>
+        <p>@p.Date</p>
         <p>@p.o</p>
         <p>@p.h</p>
         <p>@p.l</p>
         <p>@p.c</p>
         <p>@p.v</p>
-    }*@
-
+    }
+  
     
-
 
    <SfStockChart Title = "Stock Chart">
     <StockChartSeriesCollection>
-        @*<StockChartSeries DataSource="@StockDetailss" Type="ChartSeriesType.Candle" XName="Date"  High="High" Low="Low" Open="Open" Close="Close" Volume="Volume"></StockChartSeries>*@
-        <StockChartSeries DataSource="@StockPrices" Type="ChartSeriesType.Candle" XName="Date" YName = "c" High="h" Low="l" Open="o" Close="c" Volume="v"></StockChartSeries>
+       
+        <StockChartSeries DataSource="@StockPrices" Type="ChartSeriesType.Candle" XName="Date"  High="h" Low="l" Open="o" Close="c" Volume="v"></StockChartSeries>
     </StockChartSeriesCollection>
 </SfStockChart>
 
@@ -80,15 +79,23 @@ else
     public List<StockPriceDate> StockPrices = new List<StockPriceDate>();
     public List<StockPriceDate> Prices2 = new List<StockPriceDate>();
 
-   
-    
+
+
     protected override async Task OnInitializedAsync()
     {
-        StockPriceDate[] tabPrices = await Http.GetFromJsonAsync<StockPriceDate[]>($"api/stocks/prices/{id}");
+        try{
+            StockPriceDate[] tabPrices = await Http.GetFromJsonAsync<StockPriceDate[]>($"api/stocks/prices/{id}");
 
-        StockPrices.AddRange(tabPrices);
 
-       
+           
+                StockPrices.AddRange(tabPrices);
+        }
+        catch (Exception e)
+        {
+
+        }
+
+      
 
         stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
 
