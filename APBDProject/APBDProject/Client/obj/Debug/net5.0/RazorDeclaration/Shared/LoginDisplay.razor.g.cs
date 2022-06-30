@@ -84,6 +84,13 @@ using APBDProject.Client.Shared;
 #nullable disable
 #nullable restore
 #line 12 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
+using Syncfusion.Blazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 13 "C:\Users\Davido\Desktop\APBD\APBD_Project\APBDProject\APBDProject\Client\_Imports.razor"
 using Syncfusion.Blazor.Charts;
 
 #line default

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Syncfusion.Blazor;
 
 namespace APBDProject.Client
 {
@@ -15,7 +16,7 @@ namespace APBDProject.Client
     {
         public static async Task Main(string[] args)
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjYzOTUxQDMyMzAyZTMxMmUzMG9OVnhKNWRsNGRNTzNrMmc4WitlRHZmcE9EczRHZzAzZzlJd2RrS3g4OG89");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjY0NjQ3QDMyMzAyZTMxMmUzMG9OVnhKNWRsNGRNTzNrMmc4WitlRHZmcE9EczRHZzAzZzlJd2RrS3g4OG89");
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
@@ -26,6 +27,9 @@ namespace APBDProject.Client
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("APBDProject.ServerAPI"));
 
             builder.Services.AddApiAuthorization();
+
+            builder.Services.AddSyncfusionBlazor();
+           
 
             await builder.Build().RunAsync();
         }

@@ -2,6 +2,9 @@
 @using APBDProject.Shared.Models
 @using APBDProject.Shared.Models.DTOs
 @using Microsoft.AspNetCore.Authorization
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Charts
+@using Syncfusion.Blazor.Calendars
 
 @attribute [Authorize]
 
@@ -33,7 +36,7 @@
 else
 {
 
-   
+   <h3>Latest Close</h3>
         <p> Open : @prices.o</p>
         <p> High: @prices.h</p>
         <p> Low: @prices.l</p>
@@ -41,14 +44,29 @@ else
         <p> Volume: @prices.v</p>
     
 }
-@if (Prices != null)
+@if (StockPrices != null)
 {
-  
-    <SfStockChart Title="AAPL Historical">
+@*
+    @foreach(var p in StockPrices)
+    {
+        <p>@p.DateTime</p>
+        <p>@p.o</p>
+        <p>@p.h</p>
+        <p>@p.l</p>
+        <p>@p.c</p>
+        <p>@p.v</p>
+    }*@
+
+    
+
+
+   <SfStockChart Title = "Stock Chart">
     <StockChartSeriesCollection>
-        <StockChartSeries DataSource="@StockDetails2" Type="ChartSeriesType.Candle" XName="Date" High="High" Low="Low" Open="Open" Close="Close" Volume="Volume"/>
+        @*<StockChartSeries DataSource="@StockDetailss" Type="ChartSeriesType.Candle" XName="Date"  High="High" Low="Low" Open="Open" Close="Close" Volume="Volume"></StockChartSeries>*@
+        <StockChartSeries DataSource="@StockPrices" Type="ChartSeriesType.Candle" XName="Date" YName = "c" High="h" Low="l" Open="o" Close="c" Volume="v"></StockChartSeries>
     </StockChartSeriesCollection>
 </SfStockChart>
+
 
 }
 
@@ -59,14 +77,19 @@ else
     public StockInfo stock { get; set; }
     public OHLC prices { get; set; }
 
-    public List<StockPriceDate> Prices = new List<StockPriceDate>();
+    public List<StockPriceDate> StockPrices = new List<StockPriceDate>();
+    public List<StockPriceDate> Prices2 = new List<StockPriceDate>();
 
-
-
+   
+    
     protected override async Task OnInitializedAsync()
     {
         StockPriceDate[] tabPrices = await Http.GetFromJsonAsync<StockPriceDate[]>($"api/stocks/prices/{id}");
-        Prices.AddRange(tabPrices);
+
+        StockPrices.AddRange(tabPrices);
+
+       
+
         stock = await Http.GetFromJsonAsync<StockInfo>($"api/stocks/details/{id}");
 
 
@@ -74,9 +97,10 @@ else
 
 
 
+
         var postOHCL = new StockPriceDate
             {
-                DateTime = DateTime.Now,
+                Date = DateTime.Now,
                 o = prices.o,
                 c = prices.c,
                 h = prices.h,
@@ -93,29 +117,28 @@ else
 
         var postStockInfo = await Http.PostAsJsonAsync<StockInfoOHLC>($"api/stocks", postStock);
     }
-    public class ChartData
+     public class StockChartData
     {
-        public DateTime Date;
-        public Double Open;
-        public Double Low;
-        public Double Close;
-        public Double High;
-        public Double Volume;
+        public DateTime Date { get; set; }
+        public double Open { get; set; }
+        public double Low { get; set; }
+        public double Close { get; set; }
+        public double High { get; set; }
+        public double Volume { get; set; }
     }
- 
-    public List<ChartData> StockDetails2 = new List<ChartData>
+
+    public List<StockChartData> StockDetailss = new List<StockChartData>
     {
-        new ChartData { Date = new DateTime(2012, 04, 02), Open= 85.9757, High = 90.6657,Low = 85.7685, Close = 90.5257,Volume = 660187068},
-        new ChartData { Date = new DateTime(2012, 04, 09), Open= 89.4471, High = 92,Low = 86.2157, Close = 86.4614,Volume = 912634864},
-        new ChartData { Date = new DateTime(2012, 04, 16), Open= 87.1514, High = 88.6071,Low = 81.4885, Close = 81.8543,Volume = 1221746066},
-        new ChartData { Date = new DateTime(2012, 04, 23), Open= 81.5157, High = 88.2857,Low = 79.2857, Close = 86.1428,Volume = 965935749},
-        new ChartData { Date = new DateTime(2012, 04, 30), Open= 85.4, High = 85.4857,Low = 80.7385, Close = 80.75,Volume = 615249365},
-        new ChartData { Date = new DateTime(2012, 05, 07), Open= 80.2143, High = 82.2685,Low = 79.8185, Close = 80.9585,Volume = 541742692},
-        new ChartData { Date = new DateTime(2012, 05, 14), Open= 80.3671, High = 81.0728,Low = 74.5971, Close = 75.7685,Volume = 708126233},
-        new ChartData { Date = new DateTime(2012, 05, 21), Open= 76.3571, High = 82.3571,Low = 76.2928, Close = 80.3271,Volume = 682076215},
-        new ChartData { Date = new DateTime(2012, 05, 28), Open= 81.5571, High = 83.0714,Low = 80.0743, Close = 80.1414,Volume = 480059584}
-   };
-    
+        new StockChartData { Date = new DateTime(2012, 04, 02), Open = 85.9757, High = 90.6657, Low = 85.7685, Close = 90.5257, Volume = 660187068},
+        new StockChartData { Date = new DateTime(2012, 04, 09), Open = 89.4471, High = 92, Low = 86.2157, Close = 86.4614, Volume = 912634864},
+        new StockChartData { Date = new DateTime(2012, 04, 16), Open = 87.1514, High = 88.6071, Low = 81.4885, Close = 81.8543, Volume = 1221746066},
+        new StockChartData { Date = new DateTime(2012, 04, 23), Open = 81.5157, High = 88.2857, Low = 79.2857, Close = 86.1428, Volume = 965935749},
+        new StockChartData { Date = new DateTime(2012, 04, 30), Open = 85.4, High =  85.4857, Low = 80.7385, Close = 80.75, Volume = 615249365},
+        new StockChartData { Date = new DateTime(2012, 05, 07), Open = 80.2143, High = 82.2685, Low = 79.8185, Close = 80.9585, Volume = 541742692},
+        new StockChartData { Date = new DateTime(2012, 05, 14), Open = 80.3671, High = 81.0728, Low = 74.5971, Close = 75.7685, Volume = 708126233},
+        new StockChartData { Date = new DateTime(2012, 05, 21), Open = 76.3571, High = 82.3571, Low = 76.2928, Close = 80.3271, Volume = 682076215},
+        new StockChartData { Date = new DateTime(2012, 05, 28), Open = 81.5571, High = 83.0714, Low = 80.0743, Close = 80.1414, Volume = 480059584},
+    };
 
 
 

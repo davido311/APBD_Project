@@ -151,7 +151,7 @@ namespace APBDProject.Server.Services
                     await _context.StockOHLCs.AddAsync(new StockOHLC
                     {
                         StockID = stock.Stock.ticker,
-                        DateTime = stock.Prices.DateTime,
+                        DateTime = stock.Prices.Date,
                         o = stock.Prices.o,
                         h = stock.Prices.h,
                         c = stock.Prices.c,
@@ -164,7 +164,7 @@ namespace APBDProject.Server.Services
                 {
                     if (newOHLC.o != stock.Prices.o) //update new prices and date
                     {
-                        newOHLC.DateTime = stock.Prices.DateTime;
+                        newOHLC.DateTime = stock.Prices.Date;
                         newOHLC.o = stock.Prices.o;
                         newOHLC.h = stock.Prices.h;
                         newOHLC.c = stock.Prices.c;
@@ -206,14 +206,15 @@ namespace APBDProject.Server.Services
 
         public async Task<IEnumerable<StockPriceDate>> GetStockRangeRPrices(string symbol)
         {
+            try
+            {
+                var toDate = DateTime.Now.ToString("yyyy-MM-dd");
+                var fromDate = DateTime.Now.AddMonths(-3).ToString("yyy-MM-dd");
+                var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/range/1/day/{fromDate}/{toDate}?adjusted=true&sort=asc&limit=120&apiKey={polygonApiKey}");
+                int adder = 0;
+                int index = 0;
 
-            var toDate = DateTime.Now.ToString("yyyy-MM-dd");
-            var fromDate = DateTime.Now.AddMonths(-3).ToString("yyy-MM-dd");
-            var json = await httpClient.GetFromJsonAsync<OHLCSearch>($"https://api.polygon.io/v2/aggs/ticker/{symbol}/range/1/day/{fromDate}/{toDate}?adjusted=true&sort=asc&limit=120&apiKey={polygonApiKey}");
-            int adder =0;
-            int index =0;
-
-            List<OHLC> ohlcs = json.results;
+                List<OHLC> ohlcs = json.results;
 
 
                 double range = (DateTime.Parse(toDate) - DateTime.Parse(fromDate)).TotalDays; // rzeczywista ilosc dni
@@ -223,61 +224,45 @@ namespace APBDProject.Server.Services
                 List<StockPriceDate> result = new List<StockPriceDate>();
 
 
-           
-            Console.WriteLine(range);
-            Console.WriteLine(queryCount);
-            Console.WriteLine(DayOfWeek.Saturday);
 
-            /*  foreach (OHLC os in ohlcs)
-                  {
-                  if (dateTime.DayOfWeek != DayOfWeek.Saturday || dateTime.DayOfWeek != DayOfWeek.Sunday)
-                  {
-                      result.Add(new StockPriceDate
-                      {
-                          DateTime = dateTime.AddDays(adder), //31-03 
-                          o = os.o,
-                          h = os.h,
-                          c = os.c,
-                          l = os.l,
-                          v = os.v
-                      });
 
-                  }
-                 // adder++;
-                 // dateTime = dateTime.AddDays(range/queryCount);
 
-              }*/
 
-            while (dateTime != DateTime.Now && index<queryCount )
-            {
-                
 
-                if ( !(dateTime.DayOfWeek.Equals(DayOfWeek.Saturday)) && !(dateTime.DayOfWeek.Equals(DayOfWeek.Sunday))) 
+                while (dateTime != DateTime.Now && index < queryCount)
                 {
-                   
-                    var os = ohlcs[index]; 
-                    result.Add(new StockPriceDate
+
+
+                    if (!(dateTime.DayOfWeek.Equals(DayOfWeek.Saturday)) && !(dateTime.DayOfWeek.Equals(DayOfWeek.Sunday)))
                     {
-                        DateTime = dateTime, //31-03 
-                        o = os.o,
-                        h = os.h,
-                        c = os.c,
-                        l = os.l,
-                        v = os.v
-                    });
-                    index++;
-                  
-                   // Console.WriteLine(dateTime.DayOfWeek);
-                    //Console.WriteLine(dateTime.DayOfWeek.Equals(DayOfWeek.Saturday));
+
+                        var os = ohlcs[index];
+                        result.Add(new StockPriceDate
+                        {
+                            Date = dateTime, //31-03 
+                            o = os.o,
+                            h = os.h,
+                            c = os.c,
+                            l = os.l,
+                            v = os.v
+                        });
+                        index++;
+
+                        // Console.WriteLine(dateTime.DayOfWeek);
+                        //Console.WriteLine(dateTime.DayOfWeek.Equals(DayOfWeek.Saturday));
+                    }
+
+                    Console.WriteLine(!(dateTime.DayOfWeek.Equals(DayOfWeek.Saturday)) && !(dateTime.DayOfWeek.Equals(DayOfWeek.Sunday)));
+                    dateTime = dateTime.AddDays(1);
+
                 }
 
-                Console.WriteLine(!(dateTime.DayOfWeek.Equals(DayOfWeek.Saturday)) && !(dateTime.DayOfWeek.Equals(DayOfWeek.Sunday)));
-                dateTime = dateTime.AddDays(1);
-
-            }
-
                 return result;
-
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

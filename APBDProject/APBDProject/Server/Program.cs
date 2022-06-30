@@ -13,6 +13,7 @@ namespace APBDProject.Server
     {
         public static void Main(string[] args)
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjY0NjQ3QDMyMzAyZTMxMmUzMG9OVnhKNWRsNGRNTzNrMmc4WitlRHZmcE9EczRHZzAzZzlJd2RrS3g4OG89");
             CreateHostBuilder(args).Build().Run();
         }
 

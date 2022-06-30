@@ -55,7 +55,7 @@ namespace APBDProject.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjYzOTUxQDMyMzAyZTMxMmUzMG9OVnhKNWRsNGRNTzNrMmc4WitlRHZmcE9EczRHZzAzZzlJd2RrS3g4OG89");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjY0NTU2QDMyMzAyZTMxMmUzMG9OVnhKNWRsNGRNTzNrMmc4WitlRHZmcE9EczRHZzAzZzlJd2RrS3g4OG89");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -85,7 +85,7 @@ namespace APBDProject.Server
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
-            app.UsePathBase("/APBDProject");
+            
         }
     }
 }

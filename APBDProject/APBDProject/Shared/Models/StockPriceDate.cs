@@ -8,7 +8,7 @@ namespace APBDProject.Shared.Models
 {
     public class StockPriceDate
     {
-        public DateTime DateTime { get; set; }
+        public DateTime Date { get; set; }
         public double o { get; set; }
         public double c { get; set; }
         public double h { get; set; }
